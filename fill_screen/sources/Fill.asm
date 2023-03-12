@@ -11,4 +11,51 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
-// Put your code here.
+(BEGIN)
+	@8160
+	D = A
+	@columns
+	M = D
+(CHECK_KEYBOARD)
+	@column
+	M = 0
+
+	@KBD
+	D = M
+	@SET_WHITE
+	D ; JEQ
+
+	@fillcolor
+	M = -1
+	@DRAW
+	0; JMP
+
+(SET_WHITE)
+	@fillcolor
+	M = 0
+
+(DRAW)
+	@column
+	D = M
+	@columns
+	D = D - M
+	@CHECK_KEYBOARD
+	D; JEQ
+
+	@SCREEN
+	D = A
+	@column
+	D = D + M
+	@address
+	M = D
+
+	@fillcolor
+	D = M
+	@address
+	A = M
+	M = D
+
+	@column
+	M = M + 1
+	@DRAW
+	0; JMP
